@@ -21,14 +21,14 @@ cluster_subnet: 10.96.0
 kubernetes_service_ip: "{{ cluster_subnet }}.1"
 service_ip_range: "{{ cluster_subnet }}.0/12"
 service_node_port_range: 30000-32767
-api_secure_port: 5443
+api_secure_port: 6443
 
 # Highly Available configuration.
-haproxy: true
-keepalived: true # set `lb_vip_address` as keepalived vip, if this enable.
+haproxy: false
+keepalived: false # set `lb_vip_address` as keepalived vip, if this enable.
 keepalived_vip_interface: "{{ ansible_default_ipv4.interface }}"
 
-lb_vip_address: 172.16.35.9
+lb_vip_address: 10.0.0.80
 lb_secure_port: 6443
 lb_api_url: "https://{{ lb_vip_address }}:{{ lb_secure_port }}"
 
@@ -70,11 +70,11 @@ kube_proxy_mode: iptables # support: iptables, userspace or ipvs(alpha).
 kube_proxy_ipvs_scheduler: rr # depend on ipvs mode.
 
 # Extra addons
-kube_dashboard: false
+kube_dashboard: true
 kube_logging: false
 kube_monitoring: false
 
-ingress: false
+ingress: true
 ingress_type: nginx # support: nginx or traefik.
 
 # Enable docker registry

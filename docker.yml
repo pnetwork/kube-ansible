@@ -1,0 +1,7 @@
+---
+
+- hosts: kube-cluster
+  become: yes
+  roles:
+    - { role: cri/docker,     when: cri_plugin == 'docker', tags: docker }
+    - { role: cri/containerd, when: cri_plugin == 'containerd', tags: containerd }
