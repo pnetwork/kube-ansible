@@ -1,0 +1,44 @@
+---
+
+- name: create docker image directory
+  file: path={{ gunicorn_image_storage }} state=directory
+
+- name: copy docker image download shell
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  with_items:
+        - {src: 'pull-k8s-image.sh.j2',dest: '/tmp/pull-k8s-image.sh'}
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: run pull docker image shell
+  command: "{{ item }}"
+  with_items:
+    - "sh /tmp/pull-k8s-image.sh"
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: image download error handler
+  command: md5sum image.md5sum
+  delegate_to: "{{ groups['masters'][0] }}"
+  register: image_md5sum_result
+  failed_when: "'c5230cc156b4a8048ecf385c8c3f804b' not in image_md5sum_result.stdout"
+
+- name: remove image download shell
+  file: 
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /tmp/pull-k8s-image.sh
+    - /tmp/image.md5sum
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: every nodes create docker image folder
+  command: ssh "{{ item }}" -C mkdir -p /tmp/image
+  with_items:
+    - "{{ groups['kube-cluster'] }}"
+
+- name: transfer docker images to every nodes
+  shell: scp -r {{ gunicorn_image_storage }} "{{ item }}":/tmp/
+  with_items:
+    - "{{ groups['kube-cluster'] }}"

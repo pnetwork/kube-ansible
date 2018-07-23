@@ -1,0 +1,72 @@
+#!/bin/bash
+
+> /tmp/package.md5sum
+
+mkdir -p {{ gunicorn_package_storage }}
+
+# 1 kubectl:
+mkdir -p {{ gunicorn_package_storage }}/kubernetes-release/release/v1.10.0/bin/linux/amd64/
+wget https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl
+md5sum kubectl >> /tmp/package.md5sum
+mv kubectl {{ gunicorn_package_storage }}/kubernetes-release/release/v1.10.0/bin/linux/amd64/
+
+# 2 kubelet:
+mkdir -p {{ gunicorn_package_storage }}/kubernetes-release/release/v1.10.0/bin/linux/amd64/
+wget https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubelet
+md5sum kubelet >> /tmp/package.md5sum
+mv kubelet {{ gunicorn_package_storage }}/kubernetes-release/release/v1.10.0/bin/linux/amd64/
+
+# 3 etcd:
+mkdir -p {{ gunicorn_package_storage }}/coreos/etcd/releases/download/v3.2.9/
+wget https://github.com/coreos/etcd/releases/download/v3.2.9/etcd-v3.2.9-linux-amd64.tar.gz
+md5sum etcd-v3.2.9-linux-amd64.tar.gz >> /tmp/package.md5sum
+mv etcd-v3.2.9-linux-amd64.tar.gz {{ gunicorn_package_storage }}/coreos/etcd/releases/download/v3.2.9/
+
+# 4 docker:
+mkdir -p {{ gunicorn_package_storage }}/linux/static/stable/x86_64/
+wget https://download.docker.com/linux/static/stable/x86_64/docker-17.09.0-ce.tgz
+md5sum docker-17.09.0-ce.tgz >> /tmp/package.md5sum
+mv docker-17.09.0-ce.tgz {{ gunicorn_package_storage }}/linux/static/stable/x86_64/
+
+# 5 cri_containerd:
+mkdir -p {{ gunicorn_package_storage }}/kubernetes-incubator/cri-containerd/releases/download/v1.0.0-beta.1/
+wget https://github.com/kubernetes-incubator/cri-containerd/releases/download/v1.0.0-beta.1/cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz
+md5sum cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz >> /tmp/package.md5sum
+mv cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz {{ gunicorn_package_storage }}/kubernetes-incubator/cri-containerd/releases/download/v1.0.0-beta.1/
+
+# 6 cni:
+mkdir -p {{ gunicorn_package_storage }}/containernetworking/plugins/releases/download/v0.6.0/
+wget https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz
+md5sum cni-plugins-amd64-v0.6.0.tgz >> /tmp/package.md5sum
+mv cni-plugins-amd64-v0.6.0.tgz {{ gunicorn_package_storage }}/containernetworking/plugins/releases/download/v0.6.0/
+
+# 7 calicoctl:
+mkdir -p {{ gunicorn_package_storage }}/projectcalico/calicoctl/releases/download/v1.6.0/
+wget https://github.com/projectcalico/calicoctl/releases/download/v1.6.0/calicoctl
+md5sum calicoctl >> /tmp/package.md5sum
+mv calicoctl {{ gunicorn_package_storage }}/projectcalico/calicoctl/releases/download/v1.6.0/
+
+# 8 helm:
+mkdir -p {{ gunicorn_package_storage }}
+wget https://kubernetes-helm.storage.googleapis.com/helm-v2.7.2-linux-amd64.tar.gz
+md5sum helm-v2.7.2-linux-amd64.tar.gz >> /tmp/package.md5sum
+mv helm-v2.7.2-linux-amd64.tar.gz {{ gunicorn_package_storage }}
+
+# 9 cfssl:
+mkdir -p {{ gunicorn_package_storage }}/R1.2/
+wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+md5sum cfssl_linux-amd64 >> /tmp/package.md5sum
+mv cfssl_linux-amd64 {{ gunicorn_package_storage }}/R1.2/
+
+# 10 cfssljson:
+mkdir -p {{ gunicorn_package_storage }}/R1.2/
+wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+md5sum cfssljson_linux-amd64 >> /tmp/package.md5sum
+mv cfssljson_linux-amd64 {{ gunicorn_package_storage }}/R1.2/
+
+# 11 sigil:
+mkdir -p {{ gunicorn_package_storage }}/gliderlabs/sigil/releases/download/v0.4.0/
+wget https://github.com/gliderlabs/sigil/releases/download/v0.4.0/sigil_0.4.0_Linux_x86_64.tgz
+md5sum sigil_0.4.0_Linux_x86_64.tgz >> /tmp/package.md5sum
+mv sigil_0.4.0_Linux_x86_64.tgz {{ gunicorn_package_storage }}/gliderlabs/sigil/releases/download/v0.4.0/
+

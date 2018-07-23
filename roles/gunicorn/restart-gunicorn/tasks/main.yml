@@ -1,0 +1,8 @@
+---
+
+- name: restart gunicorn shell
+  shell: "{{ item }}"
+  with_items:
+        - "killall gunicorn"
+        - "nohup /tmp/start-gunicorn/start-gunicorn.sh >/dev/null 2>&1 &"
+  delegate_to: "{{ groups['masters'][0] }}"

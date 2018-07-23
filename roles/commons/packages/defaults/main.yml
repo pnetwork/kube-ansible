@@ -4,47 +4,47 @@
 bases:
   kubelet:
     # url: "https://storage.googleapis.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: "{{ kube_version }}"
   kubectl:
     # url: "https://storage.googleapis.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: "{{ kube_version }}"
   etcd:
     # url: "https://github.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 3.2.9
   docker:
     # url: "https://download.docker.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 17.09.0-ce
   cri_containerd:
     # url: "https://github.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 1.0.0-beta.1
   cni:
     # url: "https://github.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 0.6.0
   calicoctl:
     # url: "https://github.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 1.6.0
   helm:
     # url: "https://kubernetes-helm.storage.googleapis.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 2.7.2
   cfssl:
     # url: "https://pkg.cfssl.org"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 1.2
   cfssljson:
     # url: "https://pkg.cfssl.org"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 1.2
   sigil:
     # url: "https://github.com"
-    url: "http://10.0.0.80:8080"
+    url: "http://{{ groups['masters'][0] }}:8080"
     version: 0.4.0
 downloads:
   kubectl:

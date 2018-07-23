@@ -1,0 +1,14 @@
+---
+
+- name: stop gunicorn shell
+  shell: "{{ item }}"
+  with_items:
+        - "killall gunicorn"
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: remove gunicorn folder
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /tmp/start-gunicorn

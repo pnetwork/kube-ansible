@@ -1,0 +1,73 @@
+---
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- selinux:
+    policy: targeted
+    state: permissive
+
+- name: stop firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: check_centos_system
+  when: gunicorn
+  command: "{{ item }}"
+  with_items:
+    - "setenforce 0"
+    - "swapoff -a"
+
+- name: install epel-release
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - epel-release
+
+- name: install related packages
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - git
+    - ansible
+    - psmisc
+    - python2-pip.noarch
+    - wget
+
+- name: install python flask library
+  pip:
+    executable: pip
+    name: flask
+
+- name: install python gunicorn library
+  pip:
+    executable: pip
+    name: gunicorn
+
+- name: package download shell
+  template:
+    src: download-k8s-package.sh.j2
+    dest: /tmp/download-k8s-package.sh
+
+- name: run download shell
+  command: "{{ item }}"
+  with_items:
+    - "sh /tmp/download-k8s-package.sh"
+
+- name: package download error handler
+  command: md5sum package.md5sum | awk '{ print $1 }'
+  register: package_md5sum_result
+  failed_when: package_md5sum_result.stderr != 'b9418e3eff80daaa2b70348c5820a586'
+
+
+
+
+
+
+# md5sum package.md5sum | awk '{ print $1 }

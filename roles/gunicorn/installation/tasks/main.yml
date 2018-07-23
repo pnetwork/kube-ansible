@@ -1,0 +1,30 @@
+---
+
+- name: install epel-release
+  yum:
+    name: epel-release
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: install related packages
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - git
+    - ansible
+    - psmisc
+    - python2-pip.noarch
+    - wget
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: install python flask library
+  pip:
+    executable: pip
+    name: flask
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: install python gunicorn library
+  pip:
+    executable: pip
+    name: gunicorn
+  delegate_to: "{{ groups['masters'][0] }}"

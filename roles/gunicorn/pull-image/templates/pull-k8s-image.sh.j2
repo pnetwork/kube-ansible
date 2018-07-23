@@ -1,0 +1,99 @@
+#!/bin/bash
+
+> image.md5sum
+
+/usr/local/bin/docker pull gcr.io/google-containers/fluentd-elasticsearch:v2.0.2
+/usr/local/bin/docker pull gcr.io/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.7
+/usr/local/bin/docker pull gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.7
+/usr/local/bin/docker pull gcr.io/google_containers/k8s-dns-sidecar-amd64:1.14.7
+/usr/local/bin/docker pull gcr.io/google_containers/kube-apiserver-amd64:v1.10.0
+/usr/local/bin/docker pull gcr.io/google_containers/kube-controller-manager-amd64:v1.10.0
+/usr/local/bin/docker pull gcr.io/google_containers/kube-proxy-amd64:v1.10.0
+/usr/local/bin/docker pull gcr.io/google_containers/kube-scheduler-amd64:v1.10.0
+/usr/local/bin/docker pull gcr.io/google_containers/pause:3.0
+/usr/local/bin/docker pull kairen/haproxy:1.7
+/usr/local/bin/docker pull kairen/keepalived:1.2.24
+/usr/local/bin/docker pull quay.io/calico/cni:v1.11.0
+/usr/local/bin/docker pull quay.io/calico/node:v2.6.2
+/usr/local/bin/docker pull quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0
+/usr/local/bin/docker pull quay.io/calico/kube-controllers:v1.0.0
+/usr/local/bin/docker pull gcr.io/google_containers/heapster-amd64:v1.5.0-beta.2
+/usr/local/bin/docker pull gcr.io/google_containers/defaultbackend:1.4
+/usr/local/bin/docker pull gcr.io/google-containers/elasticsearch:v5.6.2
+/usr/local/bin/docker pull docker.elastic.co/kibana/kibana:5.6.2
+/usr/local/bin/docker pull gcr.io/google_containers/heapster-influxdb-amd64:v1.3.3
+/usr/local/bin/docker pull gcr.io/google_containers/heapster-grafana-amd64:v4.4.3
+/usr/local/bin/docker pull gcr.io/google_containers/addon-resizer:1.7
+/usr/local/bin/docker pull gcr.io/google_containers/kubernetes-dashboard-amd64:v1.8.0 
+
+mkdir -p {{ gunicorn_image_storage }}
+
+/usr/local/bin/docker save gcr.io/google-containers/fluentd-elasticsearch:v2.0.2 > {{ gunicorn_image_storage }}/gcr.io_google-containers_fluentd-elasticsearch_v2.0.2.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google-containers_fluentd-elasticsearch_v2.0.2.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.7 > {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-dnsmasq-nanny-amd64_1.14.7.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-dnsmasq-nanny-amd64_1.14.7.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.7 > {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-kube-dns-amd64_1.14.7.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-kube-dns-amd64_1.14.7.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/k8s-dns-sidecar-amd64:1.14.7 > {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-sidecar-amd64_1.14.7.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_k8s-dns-sidecar-amd64_1.14.7.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/kube-apiserver-amd64:v1.10.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-apiserver-amd64_v1.10.0.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-apiserver-amd64_v1.10.0.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/kube-controller-manager-amd64:v1.10.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-controller-manager-amd64_v1.10.0.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-controller-manager-amd64_v1.10.0.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/kube-proxy-amd64:v1.10.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-proxy-amd64_v1.10.0.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-proxy-amd64_v1.10.0.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/kube-scheduler-amd64:v1.10.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-scheduler-amd64_v1.10.0.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_kube-scheduler-amd64_v1.10.0.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/pause:3.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_pause_3.0.tar
+# md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_pause_3.0.tar >> image.md5sum
+
+/usr/local/bin/docker save kairen/haproxy:1.7 > {{ gunicorn_image_storage }}/kairen_haproxy_1.7.tar
+md5sum {{ gunicorn_image_storage }}/kairen_haproxy_1.7.tar >> image.md5sum
+
+/usr/local/bin/docker save kairen/keepalived:1.2.24 > {{ gunicorn_image_storage }}/kairen_keepalived_1.2.24.tar
+md5sum {{ gunicorn_image_storage }}/kairen_keepalived_1.2.24.tar >> image.md5sum
+
+/usr/local/bin/docker save quay.io/calico/cni:v1.11.0 > {{ gunicorn_image_storage }}/quay.io_calico_cni_v1.11.0.tar
+md5sum {{ gunicorn_image_storage }}/quay.io_calico_cni_v1.11.0.tar >> image.md5sum
+
+/usr/local/bin/docker save quay.io/calico/node:v2.6.2 > {{ gunicorn_image_storage }}/quay.io_calico_node_v2.6.2.tar
+md5sum {{ gunicorn_image_storage }}/quay.io_calico_node_v2.6.2.tar >> image.md5sum
+
+/usr/local/bin/docker save quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0 > {{ gunicorn_image_storage }}/quay.io_kubernetes-ingress-controller_nginx-ingress-controller_0.9.0.tar
+md5sum {{ gunicorn_image_storage }}/quay.io_kubernetes-ingress-controller_nginx-ingress-controller_0.9.0.tar >> image.md5sum
+
+/usr/local/bin/docker save quay.io/calico/kube-controllers:v1.0.0 > {{ gunicorn_image_storage }}/quay.io_calico_kube-controllers_v1.0.0.tar
+md5sum {{ gunicorn_image_storage }}/quay.io_calico_kube-controllers_v1.0.0.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/heapster-amd64:v1.5.0-beta.2 > {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-amd64_v1.5.0-beta.2.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-amd64_v1.5.0-beta.2.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/defaultbackend:1.4 > {{ gunicorn_image_storage }}/gcr.io_google_containers_defaultbackend_1.4.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_defaultbackend_1.4.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google-containers/elasticsearch:v5.6.2 > {{ gunicorn_image_storage }}/gcr.io_google-containers_elasticsearch_v5.6.2.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google-containers_elasticsearch_v5.6.2.tar >> image.md5sum
+
+/usr/local/bin/docker save docker.elastic.co/kibana/kibana:5.6.2 > {{ gunicorn_image_storage }}/docker.elastic.co_kibana_kibana_5.6.2.tar
+md5sum {{ gunicorn_image_storage }}/docker.elastic.co_kibana_kibana_5.6.2.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/heapster-influxdb-amd64:v1.3.3 > {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-influxdb-amd64_v1.3.3.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-influxdb-amd64_v1.3.3.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/heapster-grafana-amd64:v4.4.3 > {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-grafana-amd64_v4.4.3.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_heapster-grafana-amd64_v4.4.3.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/addon-resizer:1.7 > {{ gunicorn_image_storage }}/gcr.io_google_containers_addon-resizer_1.7.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_addon-resizer_1.7.tar >> image.md5sum
+
+/usr/local/bin/docker save gcr.io/google_containers/kubernetes-dashboard-amd64:v1.8.0 > {{ gunicorn_image_storage }}/gcr.io_google_containers_kubernetes-dashboard-amd64_v1.8.0.tar
+md5sum {{ gunicorn_image_storage }}/gcr.io_google_containers_kubernetes-dashboard-amd64_v1.8.0.tar >> image.md5sum
+

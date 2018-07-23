@@ -1,0 +1,24 @@
+---
+
+- name: copy docker image import shell
+  when: "ansible_host not in groups['masters'][0]"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  with_items:
+        - {src: 'load-k8s-image.sh.j2',dest: '/tmp/load-k8s-image.sh'}
+
+- name: run load docker image shell
+  when: "ansible_host not in groups['masters'][0]"
+  command: "{{ item }}"
+  with_items:
+    - "sh /tmp/load-k8s-image.sh"
+
+- name: remove pull docker image tar file
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /tmp/load-k8s-image.sh
+    - /tmp/image

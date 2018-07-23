@@ -1,0 +1,96 @@
+---
+
+- hosts: kube-cluster
+  become: yes
+  roles:
+    - { role: gunicorn/preparation, tags: preparation }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gunicorn/installation, tags: installation }
+    - { role: gunicorn/k8s-package, tags: k8s-package }
+    - { role: gunicorn/init-gunicorn, tags: init-gunicorn }
+
+- hosts: kube-cluster
+  become: yes
+  roles:
+    - { role: cri/docker,     when: cri_plugin == 'docker', tags: docker }
+    - { role: cri/containerd, when: cri_plugin == 'containerd', tags: containerd }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gunicorn/pull-image, tags: pull-image }
+
+- hosts: kube-cluster
+  become: yes
+  roles:
+    - { role: gunicorn/load-image, tags: load-image }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gunicorn/restart-gunicorn, tags: restart-gunicorn }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gen-certs, tags: gen-certs }
+
+- hosts: etcds
+  become: yes
+  roles:
+   - { role: etcd, tags: etcd }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: kubernetes/gen-configs, node_role: "master", tags: master-gen-config }
+    - { role: kubernetes/ha, tags: ha }
+    - { role: kubernetes/master, tags: master }
+
+- hosts: nodes
+  become: yes
+  roles:
+    - { role: kubernetes/gen-configs, node_role: "node", tags: master-gen-config }
+    - { role: kubernetes/node, tags: node }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: kubernetes/approve-certs, tags: approve-certs }
+    - { role: kubernetes/addon, when: kube_proxy, addon: "{{ addons.proxy }}", tags: kube-proxy }
+    - { role: kubernetes/addon, when: kube_dns,   addon: "{{ addons.dns }}",   tags: kube-dns }
+    - { role: cni, tags: cni }
+
+- hosts: kube-cluster
+  become: yes
+  roles:
+    - { role: cri/checker, when: cri_plugin == 'containerd', tags: checker }
+
+- hosts: all
+  tasks:
+    - pause: seconds=120
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gunicorn/restart-gunicorn, tags: restart-gunicorn }
+
+- hosts: kube-addon
+  become: yes
+  roles:
+  - { role: kubernetes/addon, tags: dashboard,  when: kube_dashboard,  addon: "{{ addons.dashboard }}" }
+  - { role: kubernetes/addon, tags: logging,    when: kube_logging,    addon: "{{ addons.logging }}" }
+  - { role: kubernetes/addon, tags: monitoring, when: kube_monitoring, addon: "{{ addons.monitoring }}" }
+  - { role: kubernetes/addon, tags: ingress,    when: ingress,         addon: "{{ addons.ingress[ingress_type] }}" }
+
+- hosts: masters
+  become: yes
+  roles:
+    - { role: gunicorn/stop-gunicorn, tags: stop-gunicorn }
+
+- hosts: all
+  tasks:
+    - pause: seconds=120

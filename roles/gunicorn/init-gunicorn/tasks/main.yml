@@ -1,0 +1,19 @@
+---
+
+- name: create start gunicorn directory
+  file: path=/tmp/start-gunicorn state=directory
+
+- name: copy gunicorn shell
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0755
+  with_items:
+        - {src: 'k8s-package.py.j2',dest: '/tmp/start-gunicorn/k8s-package.py'}
+        - {src: 'wsgi.py.j2',dest: '/tmp/start-gunicorn/wsgi.py'}
+        - {src: 'start-gunicorn.sh.j2',dest: '/tmp/start-gunicorn/start-gunicorn.sh'}
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: start gunicorn shell
+  shell: "nohup /tmp/start-gunicorn/start-gunicorn.sh >/dev/null 2>&1 &"
+  delegate_to: "{{ groups['masters'][0] }}"

@@ -1,0 +1,29 @@
+---
+
+- name: copy package download shell
+  template:
+    src: download-k8s-package.sh.j2
+    dest: /tmp/download-k8s-package.sh
+    mode: 0755
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: run package download shell
+  command: "{{ item }}"
+  with_items:
+    - "sh /tmp/download-k8s-package.sh"
+  delegate_to: "{{ groups['masters'][0] }}"
+
+- name: package download error handler
+  command: md5sum /tmp/package.md5sum
+  delegate_to: "{{ groups['masters'][0] }}"
+  register: package_md5sum_result
+  failed_when: "'b9418e3eff80daaa2b70348c5820a586' not in package_md5sum_result.stdout"
+
+- name: remove package download shell
+  file: 
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /tmp/download-k8s-package.sh
+    - /tmp/package.md5sum
+  delegate_to: "{{ groups['masters'][0] }}"

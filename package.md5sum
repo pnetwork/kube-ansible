@@ -1,0 +1,11 @@
+e1f801301614463e1f13cf28b4443608  kubectl
+a3ced404a71f94d2fa9230635ed4e407  kubelet
+5c7ce293a1087727c99ca8ed39c94f05  etcd-v3.2.9-linux-amd64.tar.gz
+059b4e7c05347a3eeab0b4fb5e283aab  docker-17.09.0-ce.tgz
+a32169b36cabd30d05c9ef9fef63c40d  cri-containerd-1.0.0-beta.1.linux-amd64.tar.gz
+9534876fae7dbe813cdab404dc1f9219  cni-plugins-amd64-v0.6.0.tgz
+411a2e2b7f52b756113555298f1af076  calicoctl
+845b31182a5425ed202a66e04ac095b4  helm-v2.7.2-linux-amd64.tar.gz
+fe9b6650bf148a8f827ae7496e5ce87f  cfssl_linux-amd64
+a25cf1f6f41b7b6ebf8bf8e5cc851bf3  cfssljson_linux-amd64
+5f9a73dc989ca19b7e5c0ff4005fd460  sigil_0.4.0_Linux_x86_64.tgz
