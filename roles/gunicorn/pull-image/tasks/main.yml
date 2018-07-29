@@ -4,6 +4,7 @@
   file: path={{ gunicorn_image_storage }} state=directory
 
 - name: copy docker image download shell
+  when: gunicorn_image_pull
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -13,12 +14,14 @@
   delegate_to: "{{ groups['masters'][0] }}"
 
 - name: run pull docker image shell
+  when: gunicorn_image_pull
   command: "{{ item }}"
   with_items:
     - "sh /tmp/pull-k8s-image.sh"
   delegate_to: "{{ groups['masters'][0] }}"
 
 - name: image download error handler
+  when: gunicorn_image_pull
   command: md5sum image.md5sum
   delegate_to: "{{ groups['masters'][0] }}"
   register: image_md5sum_result

@@ -97,7 +97,8 @@ repos_offline_url: "http://172.16.35.9:{{ repos_port }}"
 
 # Gunicorn support
 gunicorn: true
-gunicorn_pull: true
+gunicorn_package_pull: false
+gunicorn_image_pull: false
 gunicorn_package_storage: "/root/package"
 gunicorn_image_storage: "/root/image"
 gunicorn_package_uuid: "b9418e3eff80daaa2b70348c5820a586 not in package_md5sum_result.stdout"

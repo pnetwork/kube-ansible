@@ -9,7 +9,15 @@
   become: yes
   roles:
     - { role: gunicorn/installation, tags: installation }
+
+- hosts: masters
+  become: yes
+  roles:
     - { role: gunicorn/k8s-package, tags: k8s-package }
+
+- hosts: masters
+  become: yes
+  roles:
     - { role: gunicorn/init-gunicorn, tags: init-gunicorn }
 
 - hosts: kube-cluster

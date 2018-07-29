@@ -1,6 +1,7 @@
 ---
 
 - name: copy package download shell
+  when: gunicorn_package_pull
   template:
     src: download-k8s-package.sh.j2
     dest: /tmp/download-k8s-package.sh
@@ -8,12 +9,14 @@
   delegate_to: "{{ groups['masters'][0] }}"
 
 - name: run package download shell
+  when: gunicorn_package_pull
   command: "{{ item }}"
   with_items:
     - "sh /tmp/download-k8s-package.sh"
   delegate_to: "{{ groups['masters'][0] }}"
 
 - name: package download error handler
+  when: gunicorn_package_pull
   command: md5sum /tmp/package.md5sum
   delegate_to: "{{ groups['masters'][0] }}"
   register: package_md5sum_result
